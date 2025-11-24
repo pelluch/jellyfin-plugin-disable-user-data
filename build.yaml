@@ -1,0 +1,16 @@
+---
+name: "Template"
+guid: "b24c5930-c337-4e0f-977f-1d900629ad09"
+version: "1.0.0.0"
+targetAbi: "10.9.0.0"
+framework: "net8.0"
+overview: "Short description about your plugin"
+description: >
+  This is a longer description that can span more than one
+  line and include details about your plugin.
+category: "General"
+owner: "jellyfin"
+artifacts:
+- "Jellyfin.Plugin.CollectionsAccelerator.dll"
+changelog: >
+  changelog
