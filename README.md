@@ -40,7 +40,7 @@ What this plugin does **not** do: Modify any data or metadata in any way at all,
 
 1. The plugin applies to all clients on all platforms. I've tested many and nothing seems to break, but you are encouraged to do your own testing as well.
 2. Because of the way this plugin works (and same applies for the meilisearch one I mentioned earlier), it relies on Jellyfin not suddenly changing controller / method names for the above. This should be very rare, but there's no guarantee of this plugin working through versions (though the way it's implemented, in the worst case the parameter just won't get added).
-3. Finally, this is a **mitigation**. Ideally this plugin shouldn't have to exist. As soon as the issue is fixed upstream (and I want to help look into that), this plugin should be removed, and I might publish a version targetting that ABI which removes the Plugin functionality.
+3. Finally, this is a **mitigation**. Ideally this plugin shouldn't have to exist. As soon as the issue is fixed upstream (and I want to help look into that), this plugin should be removed.
 
 ## Compatibility
 
