@@ -1,6 +1,6 @@
 using MediaBrowser.Model.Plugins;
 
-namespace Jellyfin.Plugin.CollectionsAccelerator.Configuration;
+namespace Jellyfin.Plugin.DisableUserData.Configuration;
 
 public class PluginConfiguration : BasePluginConfiguration
 {

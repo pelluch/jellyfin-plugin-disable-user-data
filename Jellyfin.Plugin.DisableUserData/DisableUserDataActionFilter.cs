@@ -6,13 +6,13 @@ using MediaBrowser.Controller.Library;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 
-namespace Jellyfin.Plugin.CollectionsAccelerator;
+namespace Jellyfin.Plugin.DisableUserData;
 
-public sealed class CollectionsActionFilter : IAsyncActionFilter
+public sealed class DisableUserDataActionFilter : IAsyncActionFilter
 {
     private readonly ILibraryManager _libraryManager;
 
-    public CollectionsActionFilter(ILibraryManager libraryManager)
+    public DisableUserDataActionFilter(ILibraryManager libraryManager)
     {
         _libraryManager = libraryManager;
     }

@@ -5,14 +5,14 @@
     <title>Collections Accelerator</title>
 </head>
 <body>
-<div id="CollectionsAcceleratorConfigPage"
+<div id="DisableUserDataConfigPage"
      data-role="page"
      class="page type-interior pluginConfigurationPage"
      data-require="emby-input,emby-button,emby-checkbox">
 
     <div data-role="content">
         <div class="content-primary">
-            <form id="CollectionsAcceleratorConfigForm">
+            <form id="DisableUserDataConfigForm">
                 <div class="checkboxContainer checkboxContainer-withDescription">
                     <label class="emby-checkbox-label">
                         <input id="EnablePlugin"
@@ -38,28 +38,28 @@
     </div>
 
     <script type="text/javascript">
-        var CollectionsAcceleratorConfig = {
+        var DisableUserDataConfig = {
             pluginUniqueId: 'b24c5930-c337-4e0f-977f-1d900629ad09'
         };
 
-        document.querySelector('#CollectionsAcceleratorConfigPage')
+        document.querySelector('#DisableUserDataConfigPage')
             .addEventListener('pageshow', function () {
                 Dashboard.showLoadingMsg();
-                ApiClient.getPluginConfiguration(CollectionsAcceleratorConfig.pluginUniqueId)
+                ApiClient.getPluginConfiguration(DisableUserDataConfig.pluginUniqueId)
                     .then(function (config) {
                         document.querySelector('#EnablePlugin').checked = config.Enabled === true;
                         Dashboard.hideLoadingMsg();
                     });
             });
 
-        document.querySelector('#CollectionsAcceleratorConfigForm')
+        document.querySelector('#DisableUserDataConfigForm')
             .addEventListener('submit', function (e) {
                 Dashboard.showLoadingMsg();
-                ApiClient.getPluginConfiguration(CollectionsAcceleratorConfig.pluginUniqueId)
+                ApiClient.getPluginConfiguration(DisableUserDataConfig.pluginUniqueId)
                     .then(function (config) {
                         config.Enabled = document.querySelector('#EnablePlugin').checked;
 
-                        ApiClient.updatePluginConfiguration(CollectionsAcceleratorConfig.pluginUniqueId, config)
+                        ApiClient.updatePluginConfiguration(DisableUserDataConfig.pluginUniqueId, config)
                             .then(function (result) {
                                 Dashboard.processPluginConfigurationUpdateResult(result);
                             });

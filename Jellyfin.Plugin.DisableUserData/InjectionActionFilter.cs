@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Jellyfin.Plugin.CollectionsAccelerator;
+namespace Jellyfin.Plugin.DisableUserData;
 
 public static class InjectActionFilter
 {

@@ -11,6 +11,6 @@ description: >
 category: "General"
 owner: "jellyfin"
 artifacts:
-- "Jellyfin.Plugin.CollectionsAccelerator.dll"
+- "Jellyfin.Plugin.DisableUserData.dll"
 changelog: >
   changelog

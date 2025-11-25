@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Jellyfin.Plugin.CollectionsAccelerator.Configuration;
+using Jellyfin.Plugin.DisableUserData.Configuration;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
 using MediaBrowser.Model.Plugins;
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Jellyfin.Plugin.CollectionsAccelerator;
+namespace Jellyfin.Plugin.DisableUserData;
 
 public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
 {
@@ -35,7 +35,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
         {
             try
             {
-                var count = actionDescriptorProvider.AddDynamicFilter<CollectionsActionFilter>(
+                var count = actionDescriptorProvider.AddDynamicFilter<DisableUserDataActionFilter>(
                     serviceProvider,
                     cad =>
                     {
