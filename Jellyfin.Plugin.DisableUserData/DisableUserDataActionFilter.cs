@@ -40,6 +40,7 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
 
         // This if is mostly for short-circuiting purposes
         if (DisabledForItems(config, context, request)
+            || DisabledForCollections(config, context, request)
             || DisabledForContinueWatching(config, context, request)
             || DisabledForNextUp(config, context, request)
             || DisabledForRecentlyAdded(config, context, request))
@@ -58,12 +59,20 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         ActionExecutingContext context,
         HttpRequest request)
     {
-        if (config.DisableOnAllItems)
+        if (request.Path.ToString().EndsWith("/Items", StringComparison.InvariantCultureIgnoreCase) && config.DisableOnAllItems)
         {
             DisableUserData(context);
             return true;
         }
 
+        return false;
+    }
+
+    private bool DisabledForCollections(
+        PluginConfiguration config,
+        ActionExecutingContext context,
+        HttpRequest request)
+    {
         if (!config.DisableOnCollections)
         {
             return false;
