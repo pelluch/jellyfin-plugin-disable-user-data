@@ -49,6 +49,19 @@
                         Applies to <code>GetItems</code> and <code>GetItemsByUserIdLegacy</code>
                     </div>
                 </div>
+                
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="DisableOnSeasons"
+                                name="DisableOnSeasons"
+                                type="checkbox"
+                                is="emby-checkbox" />
+                        <span>Disable User Data for TV Show Seasons</span>
+                    </label>
+                    <div class="fieldDescription">
+                        When checked, UserData is disabled for queries to <code>/Shows/&lt;id&gt;/Seasons</code>.
+                    </div>
+                </div>
 
                 <hr />
 
@@ -75,6 +88,10 @@
                     </label>
                     <div class="fieldDescription">
                         Applies to <code>GetNextUp</code>.
+                        <br>
+                        <span style="color: #d9534f; font-size: 0.9em;">
+                            <strong>Note:</strong> This option does <u>not</u> apply to Jellyfin for Android TV due to a known bug that causes client crashes.
+                        </span>
                     </div>
 
                     <label class="emby-checkbox-label">
@@ -88,6 +105,37 @@
                         Applies to <code>GetLatestMedia</code> and <code>GetLatestMediaLegacy</code>.
                     </div>
                 </div>
+
+                <hr />
+
+                <h3>Global settings</h3>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="EnableRoku"
+                               name="EnableRoku"
+                               type="checkbox"
+                               is="emby-checkbox" />
+                        <span>Enable Roku UserData</span>
+                    </label>
+                    <div class="fieldDescription">
+                        UserData cannot be disabled in Roku due to a known bug that causes client crashes.
+                    </div>
+                </div>
+
+                <div class="checkboxContainer checkboxContainer-withDescription">
+                    <label class="emby-checkbox-label">
+                        <input id="DisableLogging"
+                               name="DisableLogging"
+                               type="checkbox"
+                               is="emby-checkbox" />
+                        <span>Disable Jellyfin Logging</span>
+                    </label>
+                    <div class="fieldDescription">
+                        For those that hate the log spam.
+                    </div>
+                </div>
+
 
                 <div>
                     <button is="emby-button"
@@ -126,6 +174,15 @@
                         document.querySelector('#DisableOnRecentlyAdded').checked =
                             config.DisableOnRecentlyAdded === undefined ? false : config.DisableOnRecentlyAdded;
 
+                        document.querySelector('#DisableOnSeasons').checked =
+                            config.DisableOnSeasons === undefined ? false : config.DisableOnSeasons;
+
+                        document.querySelector('#EnableRoku').checked =
+                            config.EnableRoku === undefined ? true : config.EnableRoku;
+                        Dashboard.hideLoadingMsg();
+
+                        document.querySelector('#DisableLogging').checked =
+                            config.DisableLogging === undefined ? false : config.DisableLogging;
                         Dashboard.hideLoadingMsg();
                     });
             });
@@ -140,6 +197,9 @@
                         config.DisableOnContinueWatching = document.querySelector('#DisableOnContinueWatching').checked;
                         config.DisableOnNextUp = document.querySelector('#DisableOnNextUp').checked;
                         config.DisableOnRecentlyAdded = document.querySelector('#DisableOnRecentlyAdded').checked;
+                        config.DisableOnSeasons = document.querySelector('#DisableOnSeasons').checked;
+                        config.DisableLogging = document.querySelector('#DisableLogging').checked;
+                        config.EnableRoku = document.querySelector('#EnableRoku').checked;
 
                         ApiClient.updatePluginConfiguration(DisableUserDataConfig.pluginUniqueId, config)
                             .then(function (result) {

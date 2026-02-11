@@ -14,14 +14,14 @@ namespace Jellyfin.Plugin.DisableUserData;
 public sealed class DisableUserDataActionFilter : IAsyncActionFilter
 {
     private readonly ILibraryManager _libraryManager;
-    private readonly ILogger<DisableUserDataActionFilter> _logger;
+    private readonly SuppressibleLogger<DisableUserDataActionFilter> _logger;
 
     public DisableUserDataActionFilter(
         ILibraryManager libraryManager,
         ILogger<DisableUserDataActionFilter> logger)
     {
         _libraryManager = libraryManager;
-        _logger = logger;
+        _logger = new SuppressibleLogger<DisableUserDataActionFilter>(logger);
     }
 
     public async Task OnActionExecutionAsync(
@@ -35,6 +35,9 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
             return;
         }
 
+        // Set logger suppression from config
+        _logger.DisableLogging = config.DisableLogging;
+
         var request = context.HttpContext.Request;
         _logger.LogDebug("Intercepting path {Path} to see whether we disable UserData", request.Path);
 
@@ -43,14 +46,14 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
             || DisabledForCollections(config, context, request)
             || DisabledForContinueWatching(config, context, request)
             || DisabledForNextUp(config, context, request)
-            || DisabledForRecentlyAdded(config, context, request))
+            || DisabledForRecentlyAdded(config, context, request)
+            || DisabledForSeasonsEndpoint(config, context, request))
         {
             await next();
             return;
         }
 
         _logger.LogDebug("DisableUserDataActionFilter not applying to path {Path}", request.Path);
-
         await next();
     }
 
@@ -59,7 +62,18 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         ActionExecutingContext context,
         HttpRequest request)
     {
-        if (request.Path.ToString().EndsWith("/Items", StringComparison.InvariantCultureIgnoreCase) && config.DisableOnAllItems)
+        if (!config.DisableOnAllItems)
+        {
+            return false;
+        }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
+            return false;
+        }
+
+        if (request.Path.ToString().EndsWith("/Items", StringComparison.InvariantCultureIgnoreCase))
         {
             DisableUserData(context);
             _logger.LogInformation("Disabling UserData for folder at path {Path}", request.Path);
@@ -76,6 +90,12 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
     {
         if (!config.DisableOnCollections)
         {
+            return false;
+        }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
             return false;
         }
 
@@ -115,6 +135,12 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         {
             return false;
         }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
+            return false;
+        }
 
         if (request.Path.ToString().EndsWith("/Resume", StringComparison.InvariantCultureIgnoreCase))
         {
@@ -126,6 +152,7 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         return false;
     }
 
+    // NOTE: Due to a known bug in Jellyfin for Android TV, disabling UserData for NextUp causes client crashes.
     private bool DisabledForNextUp(
         PluginConfiguration config,
         ActionExecutingContext context,
@@ -133,6 +160,19 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
     {
         if (!config.DisableOnNextUp)
         {
+            return false;
+        }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
+            return false;
+        }
+
+        // Check if client is Jellyfin for Android TV
+        if (IsAndroidTvClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling for Next Up due to Android TV bug at path {Path}", request.Path);
             return false;
         }
 
@@ -155,6 +195,12 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         {
             return false;
         }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
+            return false;
+        }
 
         if (request.Path.ToString().EndsWith("/Latest", StringComparison.InvariantCultureIgnoreCase))
         {
@@ -166,8 +212,99 @@ public sealed class DisableUserDataActionFilter : IAsyncActionFilter
         return false;
     }
 
+    // Disables UserData for /Shows/{id}/Seasons endpoint
+    private bool DisabledForSeasonsEndpoint(
+        PluginConfiguration config,
+        ActionExecutingContext context,
+        HttpRequest request)
+    {
+        if (!config.DisableOnSeasons)
+        {
+            return false;
+        }
+        // Check if client is Jellyfin for Roku
+        if (config.EnableRoku && IsRokuClient(request))
+        {
+            _logger.LogInformation("Skipping UserData disabling due to Roku bug at path {Path}", request.Path);
+            return false;
+        }
+
+        if (request.Path.ToString().EndsWith("/Seasons", StringComparison.InvariantCultureIgnoreCase))
+        {
+            DisableUserData(context);
+            _logger.LogInformation("Disabling UserData for Seasons at path {Path}", request.Path);
+            return true;
+        }
+        
+        return false;
+    }
+
     private void DisableUserData(ActionExecutingContext context)
     {
         context.ActionArguments["enableUserData"] = false;
+    }
+
+    private static bool IsAndroidTvClient(HttpRequest request)
+    {
+        // Best signal: X-Emby-Authorization header with Client="jellyfin-androidtv"
+        if (request.Headers.TryGetValue("X-Emby-Authorization", out var embyAuthHeader))
+        {
+            var auth = embyAuthHeader.ToString().ToLowerInvariant();
+            if (auth.Contains("client=\"jellyfin-androidtv\""))
+            {
+                return true;
+            }
+        }
+        // Fallback: query param
+        if (request.Query.TryGetValue("client", out var client))
+        {
+            var clientStr = client.ToString().ToLowerInvariant();
+            if (clientStr.Contains("jellyfin-androidtv"))
+            {
+                return true;
+            }
+        }
+        // Fallback: User-Agent
+        if (request.Headers.TryGetValue("User-Agent", out var userAgent))
+        {
+            var ua = userAgent.ToString().ToLowerInvariant();
+            if (ua.Contains("androidtv") || ua.Contains("android tv") || ua.Contains("jellyfin-androidtv"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static bool IsRokuClient(HttpRequest request)
+    {
+        // Best signal: X-Emby-Authorization header with Client="roku"
+        if (request.Headers.TryGetValue("X-Emby-Authorization", out var embyAuthHeader))
+        {
+            var auth = embyAuthHeader.ToString().ToLowerInvariant();
+            if (auth.Contains("client=\"roku\""))
+            {
+                return true;
+            }
+        }
+        // Fallback: query param
+        if (request.Query.TryGetValue("client", out var client))
+        {
+            var clientStr = client.ToString().ToLowerInvariant();
+            if (clientStr.Contains("roku"))
+            {
+                return true;
+            }
+        }
+        // Fallback: User-Agent
+        if (request.Headers.TryGetValue("User-Agent", out var userAgent))
+        {
+            var ua = userAgent.ToString().ToLowerInvariant();
+            if (ua.Contains("roku"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

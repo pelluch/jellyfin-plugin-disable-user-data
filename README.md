@@ -1,5 +1,10 @@
 # Disable UserData Plugin
 
+For this branch, you must update your plugin manifest to the one in this project:
+```
+https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/raw/refs/heads/main/manifest.json
+```
+
 ## Introduction
 For many people, versions 10.11.x (latest one being 10.11.3 as of this writing) results in a very slow loading of collections, and sometimes for home items. The issue is discussed in the upstream issues:
 
@@ -20,8 +25,8 @@ While trying to debug the issue, I noticed that a large portion of the slowdown 
     "Key": "ef8c5f5b-26c8-814b-bfae-3e4499649c2a",
     "ItemId": "ef8c5f5b26c8814bbfae3e4499649c2a"
   }
-  ```
-  Many APIs support directly passing in an `enableUserData` parameter. When this is set to `false`, slowdown caused by the above issues is significantly mitigated, at the cost of losing Unwatched badges and / or progress percentage in the UI, which in some cases may not matter.
+```
+Many APIs support directly passing in an `enableUserData` parameter. When this is set to `false`, slowdown caused by the above issues is significantly mitigated, at the cost of losing Unwatched badges and / or progress percentage in the UI, which in some cases may not matter.
 
 ## What the plugin does
 
@@ -53,7 +58,7 @@ Because it's server-wide, this is expected to work across clients. This has been
 1. Add a new repository to Jellyfin with the following URL:
 
     ```
-    https://raw.githubusercontent.com/pelluch/jellyfin-plugins/refs/heads/main/manifest.json
+    https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/raw/refs/heads/main/manifest.json
     ```
 
     And any name you like (e.g. pelluch Plugins).

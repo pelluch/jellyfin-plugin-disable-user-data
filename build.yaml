@@ -1,7 +1,7 @@
 ---
 name: "Disable User Data"
 guid: "b24c5930-c337-4e0f-977f-1d900629ad09"
-version: "0.2.1.0"
+version: "0.2.1.12"
 targetAbi: "10.11.0.0"
 framework: "net9.0"
 overview: "Disables user data in certain API calls"
@@ -9,8 +9,8 @@ description: >
   Disables user data in configurable API points in order
   to speed up queries
 category: "General"
-owner: "pelluch"
+owner: "kinggeorges12"
 artifacts:
 - "Jellyfin.Plugin.DisableUserData.dll"
 changelog: >
-  changelog
+  Added feature for blocking user data in seasons.

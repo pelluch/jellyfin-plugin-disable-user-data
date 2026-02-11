@@ -42,7 +42,7 @@ public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
                 {
                     [$"{BaseName}.ItemsController"] = ImmutableList.Create("GetItemsByUserIdLegacy", "GetItems", "GetResumeItemsLegacy", "GetResumeItems"),
                     [$"{BaseName}.UserLibraryController"] = ImmutableList.Create("GetLatestMediaLegacy", "GetLatestMedia"),
-                    [$"{BaseName}.TvShowsController"] = ImmutableList.Create("GetNextUp")
+                    [$"{BaseName}.TvShowsController"] = ImmutableList.Create("GetNextUp", "GetSeasons")
                 };
                 var count = actionDescriptorProvider.AddDynamicFilter<DisableUserDataActionFilter>(
                     serviceProvider,

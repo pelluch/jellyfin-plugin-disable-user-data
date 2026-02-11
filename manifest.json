@@ -1,0 +1,76 @@
+[
+    {
+        "category": "General",
+        "guid": "b24c5930-c337-4e0f-977f-1d900629ad09",
+        "name": "Disable User Data",
+        "description": "Omits UserData (watch status / progress) from different endpoints in order to speed up queries.",
+        "owner": "kinggeorges12",
+        "overview": "Disable user data param for speed-ups",
+        "versions": [
+            {
+                "checksum": "e7a712ddcd9e8c24a1fee04c8e9cee7e",
+                "changelog": "Added option to enable UserData for Roku clients.",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/releases/download/0.2.1.12/disable-user-data_0.2.1.12.zip",
+                "timestamp": "2026-02-11T00:56:00Z",
+                "version": "0.2.1.12"
+            },
+            {
+                "checksum": "3f56c12d0fa14581715530cd9198b9f7",
+                "changelog": "Added option to suppress logging.",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/releases/download/0.2.1.10/disable-user-data_0.2.1.10.zip",
+                "timestamp": "2026-02-09T22:06:00Z",
+                "version": "0.2.1.10"
+            },
+            {
+                "checksum": "50369627669f9cb35c40dec203450d23",
+                "changelog": "Android TV and Roku clients should no longer crash when the next up user data option is enabled.",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/releases/download/0.2.1.7/disable-user-data_0.2.1.7.zip",
+                "timestamp": "2026-02-09T19:51:00Z",
+                "version": "0.2.1.7"
+            },
+            {
+                "checksum": "25af69e724ab0f46c69a3619570d4a41",
+                "changelog": "Added feature for blocking user data in seasons.",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/kinggeorges12/jellyfin-plugin-disable-user-data/releases/download/0.2.1.4/disable-user-data_0.2.1.4.zip",
+                "timestamp": "2026-01-21T15:44:00Z",
+                "version": "0.2.1.4"
+            },
+            {
+                "checksum": "bcae5ecdccb28a96bb6e213d20111be2",
+                "changelog": "Properly set assembly version",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/pelluch/jellyfin-plugin-disable-user-data/releases/download/0.2.1.1/DisableUserData_0.2.1.1.zip",
+                "timestamp": "2025-11-26T03:29:24Z",
+                "version": "0.2.1.1"
+            },
+            {
+                "checksum": "068a039735f6560b13709c1721f4168b",
+                "changelog": "Bug fix for all items option",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/pelluch/jellyfin-plugin-disable-user-data/releases/download/0.2.1.0/DisableUserData_0.2.1.0.zip",
+                "timestamp": "2025-11-26T03:17:45Z",
+                "version": "0.2.1.0"
+            },
+            {
+                "checksum": "a8ca04473d66705bb645ed2c0a6720e4",
+                "changelog": "Adds more logging and option to disable user data on more items",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/pelluch/jellyfin-plugin-disable-user-data/releases/download/0.2.0.0/DisableUserData_0.2.0.0.zip",
+                "timestamp": "2025-11-26T02:56:17Z",
+                "version": "0.2.0.0"
+            },
+            {
+                "checksum": "4a1d23bb90ef2fe9dc301b270a66b251",
+                "changelog": "Initial release",
+                "targetAbi": "10.11.0.0",
+                "sourceUrl": "https://github.com/pelluch/jellyfin-plugin-disable-user-data/releases/download/0.1.0.0/DisableUserData_0.1.0.0.zip",
+                "timestamp": "2025-11-25T05:37:13Z",
+                "version": "0.1.0.0"
+            }
+        ]
+    }
+]

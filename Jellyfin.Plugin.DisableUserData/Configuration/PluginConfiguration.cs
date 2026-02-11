@@ -12,6 +12,9 @@ public class PluginConfiguration : BasePluginConfiguration
         DisableOnNextUp = false;
         DisableOnContinueWatching = false;
         DisableOnRecentlyAdded = false;
+        DisableOnSeasons = false;
+        EnableRoku = true;
+        DisableLogging = false;
     }
 
     /// <summary>
@@ -44,12 +47,30 @@ public class PluginConfiguration : BasePluginConfiguration
     /// </summary>
     public bool DisableOnRecentlyAdded { get; set; }
 
+    /// <summary>
+    /// Disable User Data for /Shows/{id}/Seasons endpoint.
+    /// </summary>
+    public bool DisableOnSeasons { get; set; }
+
+    /// <summary>
+    /// Enable UserData for Roku clients.
+    /// </summary>
+    public bool EnableRoku { get; set; }
+
+    /// <summary>
+    /// Suppress all plugin logging output.
+    /// </summary>
+    public bool DisableLogging { get; set; }
+
     public override string ToString()
     {
-        return $"{nameof(DisableOnAllItems)}: {DisableOnAllItems}, " +
-               $"{nameof(DisableOnCollections)}: {DisableOnCollections}, " +
-               $"{nameof(DisableOnContinueWatching)}: {DisableOnContinueWatching}, " +
-               $"{nameof(DisableOnNextUp)}: {DisableOnNextUp}, " +
-               $"{nameof(DisableOnRecentlyAdded)}: {DisableOnRecentlyAdded}";
+         return $"{nameof(DisableOnAllItems)}: {DisableOnAllItems}, " +
+             $"{nameof(DisableOnCollections)}: {DisableOnCollections}, " +
+             $"{nameof(DisableOnContinueWatching)}: {DisableOnContinueWatching}, " +
+             $"{nameof(DisableOnNextUp)}: {DisableOnNextUp}, " +
+             $"{nameof(DisableOnRecentlyAdded)}: {DisableOnRecentlyAdded}, " +
+             $"{nameof(DisableOnSeasons)}: {DisableOnSeasons}, " +
+             $"{nameof(EnableRoku)}: {EnableRoku}" +
+             $"{nameof(DisableLogging)}: {DisableLogging}, ";
     }
 }
